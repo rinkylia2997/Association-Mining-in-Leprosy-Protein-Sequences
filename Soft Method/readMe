@@ -3,3 +3,57 @@ The soft.fasta file is the input file that contains leprosy sequences.
 The r_soft_low contains the low length sequence results that were mined when the .fasta file was run against .py file.
 The r_soft_medium contains the medium length sequence results that were mined when the .fasta file was run against .py file.
 The r_soft_high contains the high length sequence results that were mined when the .fasta file was run against .py file.
+
+*************************************************
+
+## MAIN CONCEPT: Length-Based Partitioning
+This code splits sequences into THREE groups based on length and analyzes each group separately:
+
+LOW: Short sequences
+MEDIUM: Medium-length sequences
+HIGH: Long sequences
+
+**************************************************
+
+## KEY ADVANTAGES OF SOFT Approach
+
+### Discovers length-specific patterns
+
+Short proteins might have different amino acid composition than long ones
+Certain patterns might only appear in specific length ranges
+
+
+### Prevents length bias
+
+Each group analyzed independently
+Long sequences don't dominate the results
+
+
+### More granular analysis
+
+Can compare patterns across length groups
+Understand how composition changes with length
+
+
+### Flexible thresholds
+
+Can apply different minimum support for each group if needed
+
+************************************************************
+
+
+## When to Use Each Approach
+
+### Use CRISP when:
+
+Sequences are relatively uniform in length
+You want overall patterns across all sequences
+Simplicity is preferred
+Computational resources are limited
+
+### Use SOFT when:
+
+Sequences vary significantly in length (e.g., 50-1000 amino acids)
+You want to discover length-dependent patterns
+Different protein families with different typical lengths
+Need to compare short vs. medium vs. long protein characteristics
