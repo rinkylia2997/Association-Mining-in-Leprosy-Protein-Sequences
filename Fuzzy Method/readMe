@@ -1,3 +1,86 @@
 The fuzzy.py file contains the python code that incorporates the fuzzy logic while mining.
 The fuzzy.fasta file is the input file that contains leprosy sequences.
 The r_fuzzy contains the results that were mined when the .fasta file was run against .py file.
+
+******************************************
+## KEY NOTES -
+
+### The fuzzy approach (second code) is more sophisticated because it:
+
+Normalizes amino acid presence by sequence length
+Uses membership values (proportions) instead of raw counts
+Treats each sequence equally regardless of length
+Better captures compositional patterns rather than just frequency
+
+### The crisp approach (first code) is simpler and:
+
+Uses raw counts directly
+Faster to compute
+Better when sequences are similar length
+More traditional frequent pattern mining
+
+******************************************
+## Major Differences between CRISP and FUZZY methods 
+
+### 1. Support Calculation Method - THE KEY DIFFERENCE
+CRISP (First Code):
+python# Uses raw counts of amino acids
+s = sum(bio_df['lenTitle'])  # Total amino acids across all sequences
+sup_amino[key] = values/s     # Support = count / total amino acids
+
+Divides by total number of amino acids across all sequences
+Example: If 'A' appears 1000 times and total amino acids = 10000, support = 0.10
+
+FUZZY (Second Code):
+python# Uses membership values (proportions within each sequence)
+num_of_sequences = len(fuzzy_df)        # Total number of sequences
+sup_item[key] = values/num_of_sequences # Support = sum of memberships / number of sequences
+
+Divides by number of sequences
+Uses normalized proportions (membership values)
+
+
+### 2. Data Representation
+CRISP (First Code):
+pythonbio_df columns: ['idTitle', 'lenTitle', 'seqTitle', 'A', 'C', 'D', ...]
+# 'A', 'C', 'D' contain RAW COUNTS
+
+Example for sequence "AAALLGG":
+A = 3  (raw count)
+L = 2  (raw count)
+G = 2  (raw count)
+FUZZY (Second Code):
+python# Creates NORMALIZED proportions (membership values)
+a_list = [float(ai)/bi for ai,bi in zip(bio_df['A'],bio_df['lenTitle'])]
+
+fuzzy_df columns: ['A', 'C', 'D', 'E', 'F', ...]
+# Contains PROPORTIONS (0 to 1)
+
+Example for sequence "AAALLGG" (length=7):
+A = 3/7 = 0.428  (proportion)
+L = 2/7 = 0.286  (proportion)
+G = 2/7 = 0.286  (proportion)
+
+### 3. Membership Calculation
+CRISP (First Code):
+python# No membership concept
+# Just counts occurrences
+amino_count = {}
+for i in list_of_list:
+    for j in i:
+        if j in amino_count:
+            amino_count[j] += 1
+
+Simple frequency counting
+
+FUZZY (Second Code):
+python# Calculates membership values for each amino acid
+a_mem = sum(a_list)/len(a_list)  # Average proportion across all sequences
+c_mem = sum(c_list)/len(a_list)
+...
+
+# Creates membership dictionary
+fuzzy_1 = dict(zip(a, fuzzy))
+
+Calculates average membership (mean proportion) of each amino acid across all sequences
+Represents "how much" an amino acid belongs to the dataset
