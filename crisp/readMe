@@ -1,3 +1,83 @@
 The normal.py file contains the python code to mining the association patterns of leprosy protein sequences without using fuzzy parameters like length of the sequence,
 The normal.fasta is the input file format that contains the protein sequences along with its specific details that identifies the sequence uniquely.
 The r_crisp file contains the results of the patterns that were mined when the input file was run against the .py code file.
+*****************************
+## METHODOLOGY
+
+This Python code is performing frequent pattern mining and association rule learning on protein sequences. Let me break down what it does step by step:
+Overall Purpose
+The code analyzes protein/amino acid sequences from a FASTA file to discover:
+
+Frequent amino acid patterns (which amino acids commonly appear together)
+Association rules (relationships between amino acid occurrences)
+
+## Main Steps:
+### 1. Data Preparation
+
+Reads FASTA file containing protein sequences
+Removes duplicate sequences - keeps only unique sequences
+Parses sequences to count each amino acid (A, C, D, E, F, G, H, I, K, L, M, N, P, Q, R, S, T, U, V, W, X, Y)
+Creates a DataFrame with sequence information and amino acid counts
+Prunes sequences containing 'U' (selenocysteine) or 'X' (unknown amino acid)
+
+### 2. Frequent Itemset Mining (Apriori-like Algorithm)
+Step 1: Single Amino Acids (1-itemsets)
+
+Counts occurrence of each amino acid across all sequences
+Calculates support (frequency) = count / total amino acids
+Keeps only amino acids with support ≥ 0.05 (5% threshold)
+
+Step 2: Finding Patterns (2-itemsets, 3-itemsets, etc.)
+pythonpatterns(freq_1_items)  # Main mining function
+
+Generates combinations of amino acids (pairs, triplets, etc.)
+For each combination, calculates minimum support using min_list()
+Filters patterns with support ≥ 0.05
+Continues until no more frequent patterns are found
+Stores results in descending order of support
+
+### 3. Association Rule Generation
+pythonrules = association_rules(frequent_df, metric="confidence", min_threshold=0.7)
+
+Generates rules like: "If amino acid A appears → amino acid B likely appears"
+Uses confidence threshold of 70% (strong association)
+Metrics calculated: support, confidence, lift
+
+### 4. Report Generation
+
+Creates a Word document (r_crisp.docx)
+Generates tables for:
+
+Each level of frequent itemsets (1-itemsets, 2-itemsets, etc.)
+Association rules with their metrics
+
+
+
+## Key Functions:
+
+min_list(): Calculates minimum support for amino acid combinations
+support_items(): Normalizes counts to support values (0-1)
+freq_items(): Filters items meeting minimum support threshold
+patterns(): Iteratively finds frequent patterns of increasing size
+descending(): Sorts itemsets by support (highest first)
+
+Example Output:
+The code would discover patterns like:
+
+Frequent single amino acids: L (Leucine), A (Alanine), G (Glycine) with high support
+Frequent pairs: (L, A), (G, A) - these amino acids often occur together
+Association rules:
+
+"If L appears → A appears with 85% confidence"
+"If (G, L) appear → A appears with 90% confidence"
+
+
+
+## Use Cases:
+This analysis is valuable for:
+
+Protein structure prediction
+Understanding amino acid co-occurrence patterns
+Identifying conserved sequences
+Drug design and protein engineering
+Evolutionary biology studies
