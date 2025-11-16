@@ -2,6 +2,25 @@ The normal.py file contains the python code to mining the association patterns o
 The normal.fasta is the input file format that contains the protein sequences along with its specific details that identifies the sequence uniquely.
 The r_crisp file contains the results of the patterns that were mined when the input file was run against the .py code file.
 *****************************
+## KEY CONCEPTS
+### 1. Apriori Principle
+
+If an itemset is infrequent, all its supersets are also infrequent
+Only generates candidates from frequent itemsets of previous level
+
+### 2. Level-wise Search
+
+Level 1: Single amino acids
+Level 2: Pairs
+Level 3: Triplets
+Continues until no frequent itemsets found
+
+### 3. Pruning Strategy
+
+Only amino acids that appear in frequent k-itemsets can form (k+1)-itemsets
+This dramatically reduces the search space
+
+*****************************
 ## METHODOLOGY
 
 This Python code is performing frequent pattern mining and association rule learning on protein sequences. Let me break down what it does step by step:
